@@ -17,7 +17,7 @@ else
 
     docker run -d \
     --name memcached \
-    -p 12121:12121 \
+    -p 11211:11211 \
     --restart "unless-stopped" \
-    memcached;
+    memcached:alpine;
 fi
