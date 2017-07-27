@@ -45,9 +45,6 @@ fi
 database=$1;
 shift;
 
-# Configure output filename
-filename=$(date +%Y%m%d_%H%M)-$hostname-$database-backup.sql;
-
 # Read User Passed in Arguments
 while [ "$1" != "" ]; do
     case $1 in
@@ -65,7 +62,7 @@ while [ "$1" != "" ]; do
             ;;
         -f | --file )
             shift
-            filename=$1
+            altfilename=$1
             ;;
         -p | --port )
             shift
@@ -78,6 +75,13 @@ while [ "$1" != "" ]; do
     shift
 done
 
+# Configure output filename
+if [ ! -z $altfilename ]
+then
+    filename=$altfilename;
+else
+    filename=$(date +%Y%m%d_%H%M)-$hostname-$database-backup.sql;
+fi
 
 echo 'Backup database' $database $username'@'$hostname 'to ' $path/$filename;
 pg_dump -U $username -W -d $database -h $hostname -f $path/$filename;
